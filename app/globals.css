@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body {
+    background-color: #08080d;
+    color: #e8e6f4;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* App-feel on mobile: kill the gray tap flash + rubber-band background. */
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+  }
+
+  body {
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  /* Inputs: stop iOS Safari from auto-zooming on focus */
+  @media (max-width: 1023px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+    }
+  }
+
+  ::selection {
+    background-color: rgba(124, 108, 255, 0.4);
+    color: #fff;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #22222e;
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2d2d3d;
+  }
+}
+
+@layer components {
+  .glass {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #ffffff 0%, #b9b3ff 50%, #ff5cb1 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-accent {
+    background: linear-gradient(135deg, #7c6cff 0%, #ff5cb1 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .ring-accent-glow {
+    box-shadow:
+      0 0 0 1px rgba(124, 108, 255, 0.4),
+      0 0 28px -4px rgba(124, 108, 255, 0.6);
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: -1px -1px;
+  }
+
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: #1a1a26;
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.04) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2.2s linear infinite;
+  }
+
+  /* Custom focus ring */
+  .focus-ring {
+    @apply outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg;
+  }
+}
+
+@layer utilities {
+  .mask-fade-b {
+    mask-image: linear-gradient(180deg, #000 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent 100%);
+  }
+  .mask-fade-r {
+    mask-image: linear-gradient(90deg, #000 70%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, #000 70%, transparent 100%);
+  }
+
+  /* Safe-area insets for iPhone notch / home indicator */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pb-safe {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+  .pt-safe {
+    padding-top: max(env(safe-area-inset-top), 0px);
+  }
+
+  /* Native-feel tap response on mobile */
+  .tappable {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    transition: transform 120ms ease, opacity 120ms ease;
+  }
+  .tappable:active {
+    transform: scale(0.96);
+    opacity: 0.8;
+  }
+
+  /* Disable text selection on UI chrome */
+  .no-select {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
