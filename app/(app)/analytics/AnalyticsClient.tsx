@@ -120,21 +120,21 @@ export function AnalyticsClient({ data }: { data: AnalyticsData }) {
 
       {/* Recommendation */}
       {data.bestDayName && data.bestHour !== null && (
-        <div className="rounded-3xl bg-gradient-to-br from-accent/15 via-magenta/8 to-cyan/8 border border-accent/30 p-6 md:p-8 mb-8 relative overflow-hidden">
+        <div className="rounded-2xl md:rounded-3xl bg-gradient-to-br from-accent/15 via-magenta/8 to-cyan/8 border border-accent/30 p-4 md:p-8 mb-6 md:mb-8 relative overflow-hidden">
           <div className="absolute inset-0 grid-bg opacity-30 mask-fade-r" />
           <div className="absolute -top-20 -right-20 w-80 h-80 bg-accent/30 blur-3xl rounded-full" />
           <div className="relative">
-            <Badge tone="accent" className="mb-3">
+            <Badge tone="accent" className="mb-2 md:mb-3">
               <Sparkles className="h-3 w-3" /> Smart recommendation
             </Badge>
-            <h2 className="font-display text-2xl md:text-3xl font-semibold tracking-tight max-w-3xl text-balance">
+            <h2 className="font-display text-lg sm:text-xl md:text-3xl font-semibold tracking-tight max-w-3xl text-balance">
               Your highest-view posts go live on{" "}
               <span className="text-gradient-accent">
                 {data.bestDayName}s around {formatTime(data.bestHour, 0)}
               </span>
               .
             </h2>
-            <p className="mt-3 text-text-muted max-w-2xl leading-relaxed">
+            <p className="mt-2 md:mt-3 text-sm md:text-base text-text-muted max-w-2xl leading-relaxed">
               Based on your last {data.posts.length} Instagram post
               {data.posts.length === 1 ? "" : "s"} and your followers&apos; online
               hours.
@@ -143,8 +143,8 @@ export function AnalyticsClient({ data }: { data: AnalyticsData }) {
         </div>
       )}
 
-      {/* Reach over time */}
-      <div className="grid lg:grid-cols-3 gap-5 mb-8">
+      {/* Views over time */}
+      <div className="grid lg:grid-cols-3 gap-4 md:gap-5 mb-6 md:mb-8">
         <Card className="lg:col-span-2">
           <CardHeader>
             <div className="flex items-center justify-between">
@@ -161,7 +161,7 @@ export function AnalyticsClient({ data }: { data: AnalyticsData }) {
             </div>
           </CardHeader>
           <CardBody>
-            <div className="h-64 -ml-2">
+            <div className="h-48 md:h-64 -ml-2 max-w-full overflow-hidden">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={viewsOverTime}>
                   <defs>
@@ -215,7 +215,7 @@ export function AnalyticsClient({ data }: { data: AnalyticsData }) {
           </CardHeader>
           <CardBody>
             {audienceDataAvailable ? (
-              <div className="h-64">
+              <div className="h-40 md:h-64 max-w-full overflow-hidden">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={audienceHours.map((v, h) => ({ hour: h, value: v }))}>
                     <XAxis
@@ -274,7 +274,7 @@ export function AnalyticsClient({ data }: { data: AnalyticsData }) {
             <CardDescription>Average views per format</CardDescription>
           </CardHeader>
           <CardBody>
-            <div className="h-64 -ml-2">
+            <div className="h-48 md:h-64 -ml-2 max-w-full overflow-hidden">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={byMediaType}>
                   <CartesianGrid

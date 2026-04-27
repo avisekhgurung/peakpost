@@ -39,7 +39,7 @@ export function AppShell({
   const subtitle = ctx.igUsername && ctx.fullName ? ctx.fullName : ctx.email;
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex max-w-[100vw]">
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex w-64 flex-col fixed inset-y-0 border-r border-border bg-bg-elevated/50 backdrop-blur-xl">
         <div className="h-16 px-5 flex items-center border-b border-border">
@@ -162,7 +162,7 @@ export function AppShell({
       </header>
 
       {/* Main content — top padding for mobile header, bottom for nav + safe area */}
-      <main className="flex-1 lg:ml-64 pt-14 lg:pt-0 pb-24 lg:pb-0">
+      <main className="flex-1 min-w-0 lg:ml-64 pt-14 lg:pt-0 pb-24 lg:pb-0 overflow-x-hidden">
         {children}
       </main>
 

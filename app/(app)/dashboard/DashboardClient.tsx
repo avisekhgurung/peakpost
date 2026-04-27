@@ -90,36 +90,36 @@ export function DashboardClient({ data }: { data: DashboardData }) {
       )}
 
       {/* IG Account Card */}
-      <div className="rounded-2xl bg-surface border border-border p-5 md:p-6 flex flex-col md:flex-row items-start md:items-center gap-5 md:gap-6 mb-8">
+      <div className="rounded-2xl bg-surface border border-border p-4 md:p-6 flex items-center gap-3 md:gap-6 mb-6 md:mb-8">
         {account.profilePictureUrl ? (
           <img
             src={account.profilePictureUrl}
             alt={account.username}
-            className="h-16 w-16 md:h-20 md:w-20 rounded-2xl ring-2 ring-accent/40"
+            className="h-12 w-12 md:h-20 md:w-20 rounded-2xl ring-2 ring-accent/40 flex-shrink-0 object-cover"
           />
         ) : (
-          <div className="h-16 w-16 md:h-20 md:w-20 rounded-2xl ring-2 ring-accent/40 bg-bg-elevated flex items-center justify-center">
-            <Instagram className="h-7 w-7 text-magenta" />
+          <div className="h-12 w-12 md:h-20 md:w-20 rounded-2xl ring-2 ring-accent/40 bg-bg-elevated flex items-center justify-center flex-shrink-0">
+            <Instagram className="h-5 w-5 md:h-7 md:w-7 text-magenta" />
           </div>
         )}
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <Instagram className="h-4 w-4 text-magenta" />
-            <span className="font-display text-lg md:text-xl font-semibold">
+            <Instagram className="h-4 w-4 text-magenta flex-shrink-0" />
+            <span className="font-display text-base md:text-xl font-semibold truncate">
               @{account.username}
             </span>
-            <Badge tone="success">
+            <Badge tone="success" className="hidden sm:inline-flex">
               <CheckCircle2 className="h-3 w-3" /> Connected
             </Badge>
           </div>
-          <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-1 text-sm">
+          <div className="mt-1.5 md:mt-3 flex flex-wrap items-center gap-x-4 md:gap-x-6 gap-y-1 text-sm">
             <span>
               <span className="font-semibold">{formatNumber(account.followersCount)}</span>{" "}
               <span className="text-text-muted">followers</span>
             </span>
           </div>
         </div>
-        <Link href="/analytics" className="md:self-center">
+        <Link href="/analytics" className="hidden md:block md:self-center flex-shrink-0">
           <Button variant="secondary" size="sm">
             View analytics <ArrowRight className="h-4 w-4" />
           </Button>
@@ -128,31 +128,31 @@ export function DashboardClient({ data }: { data: DashboardData }) {
 
       {/* Hero peak time OR no-data state */}
       {data.audienceDataAvailable && slots.length > 0 ? (
-        <div className="rounded-3xl bg-gradient-to-br from-accent/10 via-bg-elevated to-magenta/5 border border-border overflow-hidden mb-8 relative">
+        <div className="rounded-3xl bg-gradient-to-br from-accent/10 via-bg-elevated to-magenta/5 border border-border overflow-hidden mb-6 md:mb-8 relative">
           <div className="absolute inset-0 grid-bg opacity-30 mask-fade-r pointer-events-none" />
-          <div className="relative grid md:grid-cols-[auto_1fr] gap-6 md:gap-10 p-5 md:p-8 items-center">
-            <div className="mx-auto md:mx-0 w-full max-w-[240px] sm:max-w-[260px] md:max-w-none">
+          <div className="relative grid md:grid-cols-[auto_1fr] gap-4 md:gap-10 p-4 md:p-8 items-center">
+            <div className="mx-auto md:mx-0 w-full max-w-[200px] sm:max-w-[240px] md:max-w-none">
               <PeakClock
                 data={data.audienceHours}
                 size={260}
                 highlight={slots[0].hour}
               />
             </div>
-            <div>
-              <Badge tone="accent" className="mb-3">
-                <Sparkles className="h-3 w-3" /> Your top window this week
+            <div className="min-w-0">
+              <Badge tone="accent" className="mb-2 md:mb-3">
+                <Sparkles className="h-3 w-3" /> Top window this week
               </Badge>
-              <h2 className="font-display text-2xl md:text-4xl font-semibold tracking-tight text-balance">
+              <h2 className="font-display text-xl sm:text-2xl md:text-4xl font-semibold tracking-tight text-balance">
                 Post on{" "}
                 <span className="text-gradient-accent">
                   {dayName(slots[0].day)} at{" "}
                   {formatTime(slots[0].hour, slots[0].minute)}
                 </span>
               </h2>
-              <p className="mt-3 text-text-muted leading-relaxed max-w-xl">
+              <p className="mt-2 md:mt-3 text-sm md:text-base text-text-muted leading-relaxed max-w-xl">
                 {slots[0].reason}
               </p>
-              <div className="mt-5 flex flex-wrap gap-2">
+              <div className="mt-4 md:mt-5 flex flex-wrap gap-2">
                 <Link
                   href={`/upload?day=${slots[0].day}&hour=${slots[0].hour}&min=${slots[0].minute}`}
                 >

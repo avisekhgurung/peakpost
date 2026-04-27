@@ -37,31 +37,31 @@ export default function LandingPage() {
 
 function Hero() {
   return (
-    <section className="relative pt-28 md:pt-36 pb-16 md:pb-24">
+    <section className="relative pt-24 md:pt-36 pb-12 md:pb-24">
       {/* atmospheric background */}
       <div className="absolute inset-0 grid-bg mask-fade-b opacity-50 pointer-events-none" />
       <div className="absolute inset-x-0 top-0 h-[600px] bg-grid-fade pointer-events-none" />
       <div className="absolute top-40 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full bg-accent/15 blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-5 md:px-8 grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-16 items-center">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-4 sm:px-5 md:px-8 grid lg:grid-cols-[1.05fr_0.95fr] gap-8 lg:gap-16 items-center">
         <div className="animate-slide-up">
-          <Badge tone="accent" className="mb-5">
+          <Badge tone="accent" className="mb-4 md:mb-5">
             <Sparkles className="h-3 w-3" />
             Now in beta — 1,200+ creators
           </Badge>
-          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.05] text-balance">
+          <h1 className="font-display text-[2.5rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-balance">
             <span className="text-gradient">Post at the perfect</span>
             <br />
             <span className="text-gradient-accent">time. Every time.</span>
           </h1>
-          <p className="mt-6 text-base md:text-lg text-text-muted max-w-xl leading-relaxed">
+          <p className="mt-4 md:mt-6 text-base md:text-lg text-text-muted max-w-xl leading-relaxed">
             PeakPost reads your Instagram audience signals, finds the exact 15-minute window
             when your followers are most active, and auto-publishes your Reels for you.
             <span className="text-text"> No more guessing.</span>
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-3 max-w-md">
-            <Link href="/login" className="flex-1">
+          <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 sm:max-w-md">
+            <Link href="/login" className="sm:flex-1">
               <Button size="lg" className="w-full">
                 Start free — connect Instagram
                 <ArrowRight className="h-4 w-4" />
@@ -74,7 +74,7 @@ function Hero() {
             </Link>
           </div>
 
-          <div className="mt-6 flex items-center gap-4 text-xs text-text-dim">
+          <div className="mt-5 md:mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-text-dim">
             <div className="flex items-center gap-1.5">
               <Check className="h-3.5 w-3.5 text-success" />
               No credit card
@@ -108,7 +108,7 @@ function SocialProof() {
   ];
   return (
     <section className="border-y border-border bg-bg-elevated/40">
-      <div className="max-w-7xl mx-auto px-5 md:px-8 py-10 grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-8 py-10 grid grid-cols-2 md:grid-cols-4 gap-6">
         {metrics.map((m) => (
           <div key={m.label} className="text-center md:text-left">
             <div className="font-display text-3xl md:text-4xl font-semibold text-gradient-accent">
@@ -165,8 +165,8 @@ function Features() {
   ];
 
   return (
-    <section id="features" className="relative py-24 md:py-32">
-      <div className="max-w-7xl mx-auto px-5 md:px-8">
+    <section id="features" className="relative py-16 md:py-32">
+      <div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-8">
         <div className="max-w-2xl">
           <Badge tone="accent" className="mb-4">
             <Zap className="h-3 w-3" />
@@ -227,9 +227,9 @@ function HowItWorks() {
     },
   ];
   return (
-    <section id="how-it-works" className="relative py-24 md:py-32 border-t border-border">
+    <section id="how-it-works" className="relative py-16 md:py-32 border-t border-border">
       <div className="absolute inset-0 grid-bg mask-fade-b opacity-30 pointer-events-none" />
-      <div className="relative max-w-7xl mx-auto px-5 md:px-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-5 md:px-8">
         <div className="max-w-2xl">
           <Badge tone="accent" className="mb-4">
             <Sparkles className="h-3 w-3" />
@@ -280,12 +280,44 @@ function ComparisonStrip() {
     { feature: "Starts at ₹399 / $4.99", us: true, buffer: false, later: false, hootsuite: false },
   ];
   return (
-    <section className="py-24 border-t border-border bg-bg-elevated/30">
-      <div className="max-w-5xl mx-auto px-5 md:px-8">
-        <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-balance">
+    <section className="py-16 md:py-24 border-t border-border bg-bg-elevated/30">
+      <div className="max-w-5xl mx-auto px-4 sm:px-4 sm:px-5 md:px-8">
+        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-balance">
           Why creators leave <span className="text-text-muted">Buffer, Later, Hootsuite</span>.
         </h2>
-        <div className="mt-10 rounded-2xl border border-border bg-surface overflow-hidden">
+
+        {/* Mobile: PeakPost vs everyone-else card */}
+        <div className="mt-8 md:hidden space-y-3">
+          {rows.map((r) => (
+            <div
+              key={r.feature}
+              className="rounded-xl border border-border bg-surface p-4"
+            >
+              <div className="text-sm font-medium mb-3">{r.feature}</div>
+              <div className="grid grid-cols-4 gap-2 text-[10px] uppercase tracking-wider text-text-muted">
+                <div className="flex flex-col items-center gap-1.5">
+                  <Tick on={r.us} accent />
+                  <span className="text-accent-glow">PeakPost</span>
+                </div>
+                <div className="flex flex-col items-center gap-1.5">
+                  <Tick on={r.buffer} />
+                  <span>Buffer</span>
+                </div>
+                <div className="flex flex-col items-center gap-1.5">
+                  <Tick on={r.later} />
+                  <span>Later</span>
+                </div>
+                <div className="flex flex-col items-center gap-1.5">
+                  <Tick on={r.hootsuite} />
+                  <span>Hootsuite</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop: full table */}
+        <div className="mt-10 hidden md:block rounded-2xl border border-border bg-surface overflow-hidden">
           <div className="grid grid-cols-[1.5fr_repeat(4,1fr)] text-xs uppercase tracking-wider text-text-muted bg-bg-elevated px-5 py-4">
             <div>Feature</div>
             <div className="text-center text-accent-glow font-semibold">PeakPost</div>
@@ -366,8 +398,8 @@ function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="relative py-24 md:py-32 border-t border-border">
-      <div className="max-w-5xl mx-auto px-5 md:px-8">
+    <section id="pricing" className="relative py-16 md:py-32 border-t border-border">
+      <div className="max-w-5xl mx-auto px-4 sm:px-5 md:px-8">
         <div className="text-center max-w-2xl mx-auto">
           <Badge tone="accent" className="mb-4">
             <Sparkles className="h-3 w-3" />
@@ -453,8 +485,8 @@ function FAQ() {
   ];
 
   return (
-    <section className="py-24 md:py-32 border-t border-border bg-bg-elevated/30">
-      <div className="max-w-3xl mx-auto px-5 md:px-8">
+    <section className="py-16 md:py-32 border-t border-border bg-bg-elevated/30">
+      <div className="max-w-3xl mx-auto px-4 sm:px-5 md:px-8">
         <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-center text-balance">
           Frequently <span className="text-gradient-accent">asked</span>
         </h2>
@@ -481,25 +513,25 @@ function FAQ() {
 
 function FinalCTA() {
   return (
-    <section className="relative py-24 md:py-32 border-t border-border overflow-hidden">
+    <section className="relative py-16 md:py-32 border-t border-border overflow-hidden">
       <div className="absolute inset-0 bg-grid-fade pointer-events-none" />
       <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full bg-accent/15 blur-3xl pointer-events-none" />
-      <div className="relative max-w-3xl mx-auto px-5 md:px-8 text-center">
-        <h2 className="font-display text-4xl md:text-6xl font-semibold tracking-tight text-balance">
+      <div className="relative max-w-3xl mx-auto px-4 sm:px-5 md:px-8 text-center">
+        <h2 className="font-display text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tight text-balance">
           Ready to <span className="text-gradient-accent">post smarter</span>?
         </h2>
-        <p className="mt-4 text-text-muted text-lg">
+        <p className="mt-4 text-text-muted text-base md:text-lg">
           Connect your Instagram in two minutes. See your peak times for free.
         </p>
-        <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/login">
-            <Button size="lg">
+        <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <Link href="/login" className="w-full sm:w-auto">
+            <Button size="lg" className="w-full sm:w-auto">
               Start free
               <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
-          <Link href="#features">
-            <Button size="lg" variant="secondary">
+          <Link href="#features" className="w-full sm:w-auto">
+            <Button size="lg" variant="secondary" className="w-full sm:w-auto">
               Read the features
             </Button>
           </Link>
@@ -512,7 +544,7 @@ function FinalCTA() {
 function Footer() {
   return (
     <footer className="border-t border-border py-10">
-      <div className="max-w-7xl mx-auto px-5 md:px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div>
           <Logo />
           <p className="mt-3 text-sm text-text-muted max-w-sm">
@@ -527,7 +559,7 @@ function Footer() {
           <a href="#" className="hover:text-text">Terms</a>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-5 md:px-8 mt-8 pt-6 border-t border-border flex items-center justify-between text-xs text-text-dim">
+      <div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-8 mt-8 pt-6 border-t border-border flex items-center justify-between text-xs text-text-dim">
         <span>© 2026 PeakPost. Not affiliated with Meta or Instagram.</span>
         <span>Made with ☕ + ❤️</span>
       </div>

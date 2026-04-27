@@ -16,9 +16,9 @@ const base =
   "inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200 focus-ring select-none disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98]";
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-3.5 text-sm",
-  md: "h-11 px-5 text-sm",
-  lg: "h-13 px-6 text-base",
+  sm: "h-10 px-4 text-sm sm:h-9 sm:px-3.5",
+  md: "h-12 px-5 text-base sm:h-11 sm:text-sm",
+  lg: "h-14 px-6 text-base sm:h-13",
 };
 
 const variants: Record<Variant, string> = {
