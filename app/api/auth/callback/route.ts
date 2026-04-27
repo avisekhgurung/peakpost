@@ -10,16 +10,23 @@ import { encrypt } from '@/lib/crypto';
 
 export const dynamic = 'force-dynamic';
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL!;
+function originFromRequest(req: NextRequest): string {
+  const proto = req.headers.get('x-forwarded-proto') ?? 'https';
+  const host =
+    req.headers.get('x-forwarded-host') ??
+    req.headers.get('host') ??
+    new URL(req.url).host;
+  return `${proto}://${host}`;
+}
 
-function loginRedirect(query: string) {
-  const url = new URL('/login', APP_URL);
+function loginRedirect(req: NextRequest, query: string) {
+  const url = new URL('/login', originFromRequest(req));
   url.search = query;
   return NextResponse.redirect(url);
 }
 
-function dashboardRedirect(query: string) {
-  const url = new URL('/dashboard', APP_URL);
+function dashboardRedirect(req: NextRequest, query: string) {
+  const url = new URL('/dashboard', originFromRequest(req));
   url.search = query;
   return NextResponse.redirect(url);
 }
@@ -30,17 +37,20 @@ export async function GET(req: NextRequest) {
   const state = url.searchParams.get('state');
   const error = url.searchParams.get('error');
 
-  if (error) return loginRedirect(`?meta_error=${encodeURIComponent(error)}`);
-  if (!code || !state) return loginRedirect('?meta_error=missing_code_or_state');
+  if (error) return loginRedirect(req, `?meta_error=${encodeURIComponent(error)}`);
+  if (!code || !state) return loginRedirect(req, '?meta_error=missing_code_or_state');
 
   const expected = req.cookies.get('meta_oauth_state')?.value;
   if (!expected || expected !== state) {
-    return loginRedirect('?meta_error=state_mismatch');
+    return loginRedirect(req, '?meta_error=state_mismatch');
   }
+
+  // The redirect URI used at /api/auth/meta — Meta requires the same on exchange.
+  const redirectUri = req.cookies.get('meta_oauth_redirect')?.value;
 
   try {
     // 1. Meta OAuth: code → short token → long-lived token
-    const short = await exchangeCodeForToken(code);
+    const short = await exchangeCodeForToken(code, redirectUri);
     const long = await getLongLivedToken(short.access_token);
 
     // 2. Get the Facebook user's email + IG business account in parallel
@@ -50,7 +60,7 @@ export async function GET(req: NextRequest) {
     ]);
 
     if (!me.email) {
-      return loginRedirect('?meta_error=no_email_from_meta');
+      return loginRedirect(req, '?meta_error=no_email_from_meta');
     }
 
     // 3. Ensure a Supabase auth user exists for this email (create if not).
@@ -109,11 +119,12 @@ export async function GET(req: NextRequest) {
       .upsert(payload, { onConflict: 'user_id,ig_user_id' });
     if (upsertErr) throw new Error(`db: ${upsertErr.message}`);
 
-    const res = dashboardRedirect('?connected=1');
+    const res = dashboardRedirect(req, '?connected=1');
     res.cookies.delete('meta_oauth_state');
+    res.cookies.delete('meta_oauth_redirect');
     return res;
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'unknown';
-    return loginRedirect(`?meta_error=${encodeURIComponent(msg.slice(0, 200))}`);
+    return loginRedirect(req, `?meta_error=${encodeURIComponent(msg.slice(0, 200))}`);
   }
 }

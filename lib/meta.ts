@@ -25,10 +25,17 @@ function appSecret() {
   if (!v) throw new Error('META_APP_SECRET not set');
   return v;
 }
-function redirectUri() {
-  const v = process.env.META_REDIRECT_URI;
-  if (!v) throw new Error('META_REDIRECT_URI not set');
-  return v;
+// Resolve the redirect URI dynamically from the request host. Falls back to
+// the env var for places that don't have an explicit override (e.g. local dev).
+// The same value MUST be exchangeForToken's redirect_uri AND registered in
+// Meta's "Valid OAuth Redirect URIs" — otherwise Meta returns "URL blocked".
+export function buildRedirectUri(originHost?: string): string {
+  if (originHost) return `${originHost.replace(/\/$/, '')}/api/auth/callback`;
+  const envOverride = process.env.META_REDIRECT_URI;
+  if (envOverride) return envOverride;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+  if (appUrl) return `${appUrl.replace(/\/$/, '')}/api/auth/callback`;
+  throw new Error('No redirect URI: set NEXT_PUBLIC_APP_URL or META_REDIRECT_URI');
 }
 
 async function jget<T>(url: string): Promise<T> {
@@ -51,10 +58,10 @@ async function jpost<T>(url: string, params: Record<string, string>): Promise<T>
 
 // ---------------- OAuth ----------------
 
-export function getOAuthUrl(state: string): string {
+export function getOAuthUrl(state: string, redirectUri?: string): string {
   const params = new URLSearchParams({
     client_id: appId(),
-    redirect_uri: redirectUri(),
+    redirect_uri: redirectUri ?? buildRedirectUri(),
     state,
     scope: SCOPES.join(','),
     response_type: 'code',
@@ -62,14 +69,17 @@ export function getOAuthUrl(state: string): string {
   return `${FB_OAUTH}?${params.toString()}`;
 }
 
-export async function exchangeCodeForToken(code: string): Promise<{
+export async function exchangeCodeForToken(
+  code: string,
+  redirectUri?: string
+): Promise<{
   access_token: string;
   expires_in?: number;
 }> {
   const params = new URLSearchParams({
     client_id: appId(),
     client_secret: appSecret(),
-    redirect_uri: redirectUri(),
+    redirect_uri: redirectUri ?? buildRedirectUri(),
     code,
   });
   return jget(`${GRAPH}/oauth/access_token?${params.toString()}`);
